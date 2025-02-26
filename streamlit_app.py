@@ -2418,7 +2418,7 @@ quiz_data_13 = [
     "question_number": 59,
     "question": "Name the three options that are available in Insert >> Picture menu?",
     "options": ["Clipart, Pictures, AutoShapes", "Clipart, From Files, AutoShapes", "Clipart, Pictures, Shapes", "Clipart, From File, Shapes"],
-    "answer": "Clipart, From Files, AutoShapes"
+    "answer": "Clipart, From File, Shapes"
   },
   {
     "question_number": 60,
@@ -2429,7 +2429,7 @@ quiz_data_13 = [
       "Insert a new text box and select Insert >> slide Number",
       "Insert a textbox and select Insert >> Number >> PageNumber"
     ],
-    "answer": "Insert a new text box and select Insert >> slide Number"
+    "answer": "Choose Insert >> Slide Number"
   },
   {
     "question_number": 61,
