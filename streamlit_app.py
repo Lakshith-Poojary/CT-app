@@ -2829,6 +2829,7 @@ if 'selected_quiz' not in st.session_state:
     st.session_state.current_question = 0
     st.session_state.score = 0
     st.session_state.show_result = False
+    st.session_state.responses = []  # Store user responses
 
 # Quiz selection
 if st.session_state.selected_quiz is None:
@@ -2839,6 +2840,7 @@ if st.session_state.selected_quiz is None:
         st.session_state.current_question = 0
         st.session_state.score = 0
         st.session_state.show_result = False
+        st.session_state.responses = []
         st.rerun()
 
 # Proceed with the selected quiz
@@ -2850,9 +2852,19 @@ if st.session_state.selected_quiz:
         question_data = quiz_data[st.session_state.current_question]
         correct_answer = question_data["answer"]
         st.session_state.show_result = True
+        
+        # Store response
+        st.session_state.responses.append({
+            "question_number": question_data["question_number"],
+            "question": question_data["question"],
+            "selected_option": selected_option,
+            "correct_answer": correct_answer,
+            "is_correct": selected_option == correct_answer
+        })
+        
         if selected_option == correct_answer:
             st.session_state.score += 1
-    
+
     # Display question if within bounds
     if st.session_state.current_question < len(quiz_data):
         question_data = quiz_data[st.session_state.current_question]
@@ -2864,7 +2876,8 @@ if st.session_state.selected_quiz:
         if st.button("Submit"):
             if selected_option:
                 check_answer(selected_option)
-        
+                st.rerun()
+
         if st.session_state.show_result:
             correct_answer = question_data["answer"]
             if selected_option == correct_answer:
@@ -2876,11 +2889,31 @@ if st.session_state.selected_quiz:
                 st.session_state.current_question += 1
                 st.session_state.show_result = False
                 st.rerun()
+    
     else:
         st.success(f"Quiz Completed! Your final score is {st.session_state.score}/{len(quiz_data)}")
+        
+        # Format responses into a text report
+        responses_text = "Quiz Results:\n\n"
+        for resp in st.session_state.responses:
+            responses_text += f"Q{resp['question_number']}: {resp['question']}\n"
+            responses_text += f"Your Answer: {resp['selected_option']}\n"
+            responses_text += f"Correct Answer: {resp['correct_answer']}\n"
+            responses_text += f"Result: {'✅ Correct' if resp['is_correct'] else '❌ Incorrect'}\n"
+            responses_text += "-" * 50 + "\n"
+
+        # Provide a download button for the quiz report
+        st.download_button(
+            label="Download Quiz Report",
+            data=responses_text,
+            file_name="quiz_results.txt",
+            mime="text/plain"
+        )
+        
         if st.button("Restart Quiz"):
             st.session_state.selected_quiz = None
             st.session_state.current_question = 0
             st.session_state.score = 0
             st.session_state.show_result = False
+            st.session_state.responses = []
             st.rerun()
