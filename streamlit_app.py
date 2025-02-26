@@ -5,7 +5,7 @@ quiz_data_1 = [
         "question_number": 1,
         "question": "C in CPU denotes",
         "options": ["Central", "Common", "Convenient", "Computer", "None of these"],
-        "answer": "None of these"
+        "answer": "Central"
     },
     {
         "question_number": 2,
